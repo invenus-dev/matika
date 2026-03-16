@@ -27,7 +27,7 @@ export function ColumnArithmetic() {
   }, [handleKeyDown])
 
   return (
-    <div className="flex items-center gap-24 py-8">
+    <div className="flex items-center gap-48 py-8">
       <ColumnDisplay
         operation={problem.operation}
         operandA={problem.operandA}
