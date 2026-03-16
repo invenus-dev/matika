@@ -17,7 +17,9 @@ export function useColumnProblem(
 
   // Is there an incorrect digit we can go back to?
   const hasError = problem.answerDigits.some((d) => d.status === 'incorrect')
+  const allFilled = problem.answerDigits.every((d) => d.status !== 'empty')
   const canFix = hasError && remainingFixes > 0
+  const waitingForFix = allFilled && hasError && !completed
 
   // Cleanup timer on unmount
   useEffect(() => {
@@ -28,7 +30,7 @@ export function useColumnProblem(
 
   const enterDigit = useCallback(
     (digit: number) => {
-      if (completed) return
+      if (completed || waitingForFix) return
 
       setProblem((prev) => {
         const newDigits = [...prev.answerDigits]
@@ -48,25 +50,31 @@ export function useColumnProblem(
           const correctDigits = newDigits.filter((d) => d.status === 'correct').length
           const totalDigits = newDigits.length
           const allCorrect = correctDigits === totalDigits
-          const timeMs = Date.now() - startTimeRef.current
+          const hasErrors = !allCorrect
 
-          const result: ProblemResult = {
-            operation: prev.operation,
-            correct: allCorrect,
-            totalDigits,
-            correctDigits,
-            timeMs,
+          // If there are errors and fixes remain, wait for fix instead of advancing
+          if (hasErrors && remainingFixes > 0) {
+            // Don't advance position — stay, let user press fix
+          } else {
+            const timeMs = Date.now() - startTimeRef.current
+            const result: ProblemResult = {
+              operation: prev.operation,
+              correct: allCorrect,
+              totalDigits,
+              correctDigits,
+              timeMs,
+            }
+
+            setCompleted(true)
+            timerRef.current = setTimeout(() => {
+              onResult(result)
+              setProblem(generateColumnProblem())
+              setActivePosition(0)
+              setCompleted(false)
+              setRemainingFixes(MAX_FIXES_PER_PROBLEM)
+              startTimeRef.current = Date.now()
+            }, AUTO_ADVANCE_DELAY_MS)
           }
-
-          setCompleted(true)
-          timerRef.current = setTimeout(() => {
-            onResult(result)
-            setProblem(generateColumnProblem())
-            setActivePosition(0)
-            setCompleted(false)
-            setRemainingFixes(MAX_FIXES_PER_PROBLEM)
-            startTimeRef.current = Date.now()
-          }, AUTO_ADVANCE_DELAY_MS)
         } else {
           setActivePosition(nextPos)
         }
@@ -74,7 +82,7 @@ export function useColumnProblem(
         return updatedProblem
       })
     },
-    [activePosition, completed, onResult],
+    [activePosition, completed, waitingForFix, remainingFixes, onResult],
   )
 
   const fixError = useCallback(() => {
@@ -117,5 +125,5 @@ export function useColumnProblem(
     setRemainingFixes((r) => r - 1)
   }, [canFix, problem.answerDigits])
 
-  return { problem, activePosition, completed, enterDigit, canFix, remainingFixes, fixError }
+  return { problem, activePosition, completed, waitingForFix, enterDigit, canFix, remainingFixes, fixError }
 }

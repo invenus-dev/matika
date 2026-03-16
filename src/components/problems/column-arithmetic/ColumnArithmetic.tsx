@@ -6,7 +6,7 @@ import { useColumnProblem } from './useColumnProblem'
 
 export function ColumnArithmetic() {
   const { recordResult } = useProblemContext()
-  const { problem, activePosition, completed, enterDigit, canFix, remainingFixes, fixError } =
+  const { problem, activePosition, completed, waitingForFix, enterDigit, canFix, remainingFixes, fixError } =
     useColumnProblem(recordResult)
 
   const handleKeyDown = useCallback(
@@ -37,7 +37,7 @@ export function ColumnArithmetic() {
       />
       <NumberPad
         onDigit={enterDigit}
-        disabled={completed}
+        disabled={completed || waitingForFix}
         canFix={canFix}
         remainingFixes={remainingFixes}
         onFix={fixError}
