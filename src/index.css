@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  --font-fun: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursive;
+  --color-primary: #3b82f6;
+  --color-primary-dark: #2563eb;
+  --color-correct: #22c55e;
+  --color-correct-light: #bbf7d0;
+  --color-incorrect: #ef4444;
+  --color-incorrect-light: #fecaca;
+  --color-active: #3b82f6;
+  --color-active-light: #dbeafe;
+  --color-muted: #9ca3af;
+  --color-surface: #f8fafc;
+}
+
+html, body, #root {
+  height: 100%;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: var(--font-fun);
+}
+
+body {
+  margin: 0;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
