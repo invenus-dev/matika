@@ -26,7 +26,7 @@ export function NumberPad({ onDigit, disabled, canFix, remainingFixes, onFix }: 
                 e.preventDefault()
                 onFix?.()
               }}
-              className="w-20 h-20 rounded-xl bg-incorrect-light border-2 border-incorrect text-incorrect text-lg font-semibold select-none transition-all active:scale-95"
+              className="w-17 h-17 rounded-xl bg-incorrect-light border-2 border-incorrect text-incorrect text-lg font-semibold select-none transition-all active:scale-95"
               style={{ touchAction: 'manipulation' }}
               title={`Opravit (zbývá ${remainingFixes ?? 0}×)`}
             >
@@ -45,7 +45,7 @@ export function NumberPad({ onDigit, disabled, canFix, remainingFixes, onFix }: 
               if (!disabled) onDigit(cell as number)
             }}
             disabled={disabled}
-            className="w-20 h-20 rounded-xl bg-white border-2 border-gray-200 text-2xl font-semibold text-gray-700 select-none transition-all active:scale-95 active:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-17 h-17 rounded-xl bg-white border-2 border-gray-200 text-2xl font-semibold text-gray-700 select-none transition-all active:scale-95 active:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
             style={{ touchAction: 'manipulation' }}
           >
             {cell}

@@ -11,7 +11,7 @@ function App() {
     <ProblemProvider>
       <div className="h-full flex flex-col bg-surface">
         <Header onShowStats={() => setShowStats(true)} />
-        <main className="flex-1 flex items-center justify-center overflow-auto">
+        <main className="flex-1 overflow-hidden">
           <ProblemArea />
         </main>
         {showStats && (

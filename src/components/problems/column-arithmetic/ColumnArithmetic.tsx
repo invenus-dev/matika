@@ -28,25 +28,34 @@ export function ColumnArithmetic() {
   }, [handleKeyDown])
 
   return (
-    <div className="flex items-center gap-48 py-8">
-      {feedback ? (
-        <FeedbackEmoji type={feedback} />
-      ) : (
-        <ColumnDisplay
-          operation={problem.operation}
-          operandA={problem.operandA}
-          operandB={problem.operandB}
-          answerDigits={problem.answerDigits}
-          activePosition={activePosition}
+    <div className="h-full flex flex-col md:flex-row md:items-center md:justify-center md:gap-48">
+      {/* Top half: problem */}
+      <div className="flex-1 flex items-end justify-center pb-4 md:flex-none md:items-center md:pb-0 relative">
+        <div className={feedback ? 'opacity-20' : undefined}>
+          <ColumnDisplay
+            operation={problem.operation}
+            operandA={problem.operandA}
+            operandB={problem.operandB}
+            answerDigits={problem.answerDigits}
+            activePosition={activePosition}
+          />
+        </div>
+        {feedback && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <FeedbackEmoji type={feedback} />
+          </div>
+        )}
+      </div>
+      {/* Bottom half: keyboard */}
+      <div className="flex-1 flex items-start justify-center pt-4 pb-8 md:flex-none md:items-center md:pt-0 md:pb-0">
+        <NumberPad
+          onDigit={enterDigit}
+          disabled={completed || waitingForFix}
+          canFix={canFix}
+          remainingFixes={remainingFixes}
+          onFix={fixError}
         />
-      )}
-      <NumberPad
-        onDigit={enterDigit}
-        disabled={completed || waitingForFix}
-        canFix={canFix}
-        remainingFixes={remainingFixes}
-        onFix={fixError}
-      />
+      </div>
     </div>
   )
 }
