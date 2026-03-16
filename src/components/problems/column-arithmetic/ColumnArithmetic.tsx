@@ -2,11 +2,12 @@ import { useEffect, useCallback } from 'react'
 import { useProblemContext } from '../../../context/ProblemContext'
 import { NumberPad } from '../../common/NumberPad'
 import { ColumnDisplay } from './ColumnDisplay'
+import { FeedbackEmoji } from './FeedbackEmoji'
 import { useColumnProblem } from './useColumnProblem'
 
 export function ColumnArithmetic() {
   const { recordResult } = useProblemContext()
-  const { problem, activePosition, completed, waitingForFix, enterDigit, canFix, remainingFixes, fixError } =
+  const { problem, activePosition, completed, waitingForFix, feedback, enterDigit, canFix, remainingFixes, fixError } =
     useColumnProblem(recordResult)
 
   const handleKeyDown = useCallback(
@@ -28,13 +29,17 @@ export function ColumnArithmetic() {
 
   return (
     <div className="flex items-center gap-48 py-8">
-      <ColumnDisplay
-        operation={problem.operation}
-        operandA={problem.operandA}
-        operandB={problem.operandB}
-        answerDigits={problem.answerDigits}
-        activePosition={activePosition}
-      />
+      {feedback ? (
+        <FeedbackEmoji type={feedback} />
+      ) : (
+        <ColumnDisplay
+          operation={problem.operation}
+          operandA={problem.operandA}
+          operandB={problem.operandB}
+          answerDigits={problem.answerDigits}
+          activePosition={activePosition}
+        />
+      )}
       <NumberPad
         onDigit={enterDigit}
         disabled={completed || waitingForFix}

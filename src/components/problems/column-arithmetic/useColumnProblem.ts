@@ -11,6 +11,7 @@ export function useColumnProblem(
   const [problem, setProblem] = useState<ColumnProblem>(generateColumnProblem)
   const [activePosition, setActivePosition] = useState(0)
   const [completed, setCompleted] = useState(false)
+  const [feedback, setFeedback] = useState<'correct' | 'incorrect' | null>(null)
   const [remainingFixes, setRemainingFixes] = useState(MAX_FIXES_PER_PROBLEM)
   const startTimeRef = useRef(Date.now())
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -66,11 +67,13 @@ export function useColumnProblem(
             }
 
             setCompleted(true)
+            setFeedback(allCorrect ? 'correct' : 'incorrect')
             timerRef.current = setTimeout(() => {
               onResult(result)
               setProblem(generateColumnProblem())
               setActivePosition(0)
               setCompleted(false)
+              setFeedback(null)
               setRemainingFixes(MAX_FIXES_PER_PROBLEM)
               startTimeRef.current = Date.now()
             }, AUTO_ADVANCE_DELAY_MS)
@@ -125,5 +128,5 @@ export function useColumnProblem(
     setRemainingFixes((r) => r - 1)
   }, [canFix, problem.answerDigits])
 
-  return { problem, activePosition, completed, waitingForFix, enterDigit, canFix, remainingFixes, fixError }
+  return { problem, activePosition, completed, waitingForFix, feedback, enterDigit, canFix, remainingFixes, fixError }
 }
