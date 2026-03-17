@@ -1,3 +1,4 @@
+import { Minus } from '@phosphor-icons/react'
 import type { OperationType, AnswerDigit } from '../../../types'
 import { extractDigits } from '../../../utils/math'
 import { DigitCell } from './DigitCell'
@@ -45,8 +46,6 @@ export function ColumnDisplay({
     extractDigits(operandA).length,
     extractDigits(operandB).length + 1, // +1 because operator occupies one cell
   )
-  const operator = operation === 'addition' ? '' : '−'
-
   return (
     <div className="inline-flex flex-col items-end">
       {/* Operand A */}
@@ -54,8 +53,8 @@ export function ColumnDisplay({
 
       {/* Operator + Operand B */}
       <div className="flex items-center">
-        <div className={`w-12 ${CELL.split(' ')[1]} flex items-center justify-center text-4xl font-bold text-gray-500`}>
-          {operator}
+        <div className={`w-12 ${CELL.split(' ')[1]} flex items-center justify-center text-gray-500`}>
+          {operation === 'subtraction' && <Minus size={28} weight="bold" />}
         </div>
         <OperandRow value={operandB} maxCols={maxCols - 1} />
       </div>

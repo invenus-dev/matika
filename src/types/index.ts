@@ -1,3 +1,5 @@
+import type { Icon } from '@phosphor-icons/react'
+
 export type OperationType = 'addition' | 'subtraction'
 
 export type ExerciseType = 'column-arithmetic'
@@ -6,7 +8,7 @@ export interface ExerciseTypeInfo {
   type: ExerciseType
   name: string
   description: string
-  icon: string
+  icon: Icon
 }
 
 export type DigitStatus = 'empty' | 'correct' | 'incorrect'

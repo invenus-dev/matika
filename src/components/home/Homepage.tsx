@@ -25,7 +25,7 @@ export function Homepage({ dailyCounts, onSelectExercise }: HomepageProps) {
               }}
               className="flex items-center gap-4 p-5 rounded-2xl shadow-md bg-white hover:shadow-lg transition-shadow text-left touch-manipulation"
             >
-              <span className="text-4xl">{ex.icon}</span>
+              <ex.icon size={40} weight="duotone" color="#3b82f6" />
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-gray-800">{ex.name}</div>
                 <div className="text-sm text-gray-500">{ex.description}</div>

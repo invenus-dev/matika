@@ -1,3 +1,4 @@
+import { ArrowLeft, ChartBar } from '@phosphor-icons/react'
 import type { ExerciseType } from '../../types'
 import { EXERCISE_TYPES, DAILY_GOAL } from '../../utils/constants'
 
@@ -28,9 +29,9 @@ export function Header({
             e.preventDefault()
             onNavigateHome()
           }}
-          className="text-sm md:text-lg font-semibold text-primary hover:text-primary-dark transition-colors touch-manipulation"
+          className="flex items-center gap-1.5 text-sm md:text-lg font-semibold text-primary hover:text-primary-dark transition-colors touch-manipulation"
         >
-          ← {exerciseInfo.name}
+          <ArrowLeft size={20} weight="bold" /> {exerciseInfo.name}
         </button>
       ) : (
         <h1 className="text-lg font-semibold text-gray-800">Matika</h1>
@@ -49,7 +50,7 @@ export function Header({
             className="text-xl disabled:opacity-40 disabled:cursor-not-allowed touch-manipulation"
             title="Vyhodnotit"
           >
-            📊
+            <ChartBar size={24} weight="duotone" />
           </button>
         )}
       </div>

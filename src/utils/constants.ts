@@ -7,11 +7,13 @@ export const AUTO_ADVANCE_DELAY_MS = 1500
 
 export const DAILY_GOAL = 10
 
+import { Calculator } from '@phosphor-icons/react'
+
 export const EXERCISE_TYPES: import('../types').ExerciseTypeInfo[] = [
   {
     type: 'column-arithmetic',
     name: 'Sčítání a odčítání',
     description: 'Pod čarou do 1000',
-    icon: '➕',
+    icon: Calculator,
   },
 ]

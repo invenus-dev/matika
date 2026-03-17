@@ -49,7 +49,7 @@ export function ColumnArithmetic({ exerciseType }: ColumnArithmeticProps) {
     <div className="h-full flex flex-col md:flex-row md:items-center md:justify-center md:gap-48">
       {/* Top half: problem */}
       <div className="flex-1 flex items-end justify-center pb-4 md:flex-none md:items-center md:pb-0 relative">
-        <div className={feedback ? 'opacity-20' : undefined}>
+        <div className={feedback ? 'opacity-10' : undefined}>
           <ColumnDisplay
             operation={problem.operation}
             operandA={problem.operandA}

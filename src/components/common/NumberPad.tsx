@@ -1,3 +1,5 @@
+import { ArrowCounterClockwise } from '@phosphor-icons/react'
+
 interface NumberPadProps {
   onDigit: (digit: number) => void
   disabled?: boolean
@@ -30,7 +32,7 @@ export function NumberPad({ onDigit, disabled, canFix, remainingFixes, onFix }: 
               style={{ touchAction: 'manipulation' }}
               title={`Opravit (zbývá ${remainingFixes ?? 0}×)`}
             >
-              ↩ {remainingFixes}×
+              <ArrowCounterClockwise size={18} weight="bold" className="inline" /> {remainingFixes}×
             </button>
           )
         }

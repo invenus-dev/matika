@@ -1,27 +1,45 @@
+import {
+  Confetti,
+  Trophy,
+  Heart,
+  Star,
+  ThumbsUp,
+  HandsClapping,
+  SmileyWink,
+  SmileySad,
+} from '@phosphor-icons/react'
+
 interface FeedbackEmojiProps {
   type: 'correct' | 'incorrect'
 }
 
-const sparkles = ['🎉', '🥳', '❤️', '🎊', '💪', '👏']
+const sparkles = [
+  { Icon: Confetti, color: '#f59e0b' },
+  { Icon: Trophy, color: '#eab308' },
+  { Icon: Heart, color: '#ef4444' },
+  { Icon: Star, color: '#f59e0b' },
+  { Icon: ThumbsUp, color: '#3b82f6' },
+  { Icon: HandsClapping, color: '#22c55e' },
+]
 
 export function FeedbackEmoji({ type }: FeedbackEmojiProps) {
   if (type === 'correct') {
     return (
       <div className="relative flex items-center justify-center w-64 h-64">
-        {sparkles.map((s, i) => (
+        {sparkles.map(({ Icon, color }, i) => (
           <span
             key={i}
-            className="absolute text-4xl animate-sparkle"
+            className="absolute animate-sparkle"
             style={{
               animationDelay: `${i * 0.08}s`,
               '--angle': `${i * 60}deg`,
             } as React.CSSProperties}
           >
-            {s}
+            <Icon size={36} weight="fill" color={color} />
           </span>
         ))}
-        <span className="text-[10rem] leading-none animate-celebrate select-none">
-          😄
+        <span className="animate-celebrate select-none">
+          <SmileyWink size={160} weight="duotone" color="#22c55e" />
         </span>
       </div>
     )
@@ -29,8 +47,8 @@ export function FeedbackEmoji({ type }: FeedbackEmojiProps) {
 
   return (
     <div className="flex items-center justify-center w-64 h-64">
-      <span className="text-[10rem] leading-none animate-sadface select-none">
-        😕
+      <span className="animate-sadface select-none">
+        <SmileySad size={160} weight="duotone" color="#ef4444" />
       </span>
     </div>
   )

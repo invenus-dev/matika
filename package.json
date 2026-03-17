@@ -11,6 +11,7 @@
     "deploy": "npm run build && wrangler pages deploy dist --project-name matika"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
     "@tailwindcss/vite": "^4.2.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
