@@ -25,7 +25,7 @@ function AppContent() {
     setActiveView('home')
   }, [])
 
-  const totalDaily = Object.values(dailyCounts).reduce((sum, c) => sum + c, 0)
+  const activeDaily = activeExerciseType ? dailyCounts[activeExerciseType] : 0
 
   const statsDisabled = activeExerciseType
     ? getStats(activeExerciseType).totalProblems === 0
@@ -35,7 +35,7 @@ function AppContent() {
     <div className="h-full flex flex-col bg-surface">
       <Header
         activeExerciseType={activeView === 'exercise' ? activeExerciseType : null}
-        dailyCount={totalDaily}
+        dailyCount={activeDaily}
         onNavigateHome={handleNavigateHome}
         onShowStats={() => setShowStats(true)}
         statsDisabled={statsDisabled}
@@ -59,7 +59,7 @@ function AppContent() {
       )}
       {justReachedGoal && (
         <GoalCelebration
-          dailyTotal={totalDaily}
+          dailyTotal={activeDaily}
           onContinue={dismissGoalCelebration}
           onGoHome={() => {
             dismissGoalCelebration()

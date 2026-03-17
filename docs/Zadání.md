@@ -36,10 +36,20 @@ Mezi druhy příkladů půjde přepnout a pak se klidně může vše promazat a 
 - Zobrazí se mi seznam typů příkladů, které můžu procvičovat, na velkých dlaždicích
 - Jednotlivé typy by si měly pamatovat dosavadní průběh a statistiky dokud nedám "reset" ve vyhodnocení
 
-## První typ příkladů: sčítání a odčítání pod čarou
+## Typy příkladů
+
+### Sčítání a odčítání pod čarou
 
 - Dvě čísla které sčítáme / odečítáme pod sebou
 - Maximálně tříciferné číslo a dvojciferné které odečítáme
 - Výsledek dítě doplní samo, navrhni dotykové ovládání
 - Klidně ať to zadává postupně zprava doleva po jednotlivých číslicích a ukazat mu feedback - je ta číslice správně nebo ne
 
+### Převody jednotek
+
+- Jednoduché převody mezi jednotkami m, kg a l. 
+- Vždy stejné jednotky, mění se řády. Neuvažujeme desetinná čísla, proto takové příklady negenerujeme.
+- Příklad: 1000 m = ? km, 1000 g = ? kg, 1000 ml = ? l
+- Používané řády: deci, centi, mili, kilo. 
+- Ovládání: klávesy + a - pro přidání / ubrání řádu, tlačítko pro potvrzení odpovědi, vyhodnocení správnosti
+- 1 pokus na opravu.

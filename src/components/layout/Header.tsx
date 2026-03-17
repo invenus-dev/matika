@@ -41,9 +41,11 @@ export function Header({
         </div>
       )}
       <div className="flex items-center gap-3">
-        <span className="text-sm font-medium text-gray-600">
-          {dailyCount}/{DAILY_GOAL}
-        </span>
+        {activeExerciseType && (
+          <span className="text-sm font-medium text-gray-600">
+            {dailyCount}/{DAILY_GOAL}
+          </span>
+        )}
         {activeExerciseType && (
           <button
             onPointerDown={(e) => {

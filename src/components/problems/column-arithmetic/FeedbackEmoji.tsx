@@ -38,7 +38,7 @@ export function FeedbackEmoji({ type }: FeedbackEmojiProps) {
             <Icon size={36} weight="fill" color={color} />
           </span>
         ))}
-        <span className="animate-celebrate select-none">
+        <span className="animate-celebrate select-none emoji-solid" style={{ '--emoji-fill': '#86efac' } as React.CSSProperties}>
           <SmileyWink size={160} weight="duotone" color="#22c55e" />
         </span>
       </div>
@@ -47,7 +47,7 @@ export function FeedbackEmoji({ type }: FeedbackEmojiProps) {
 
   return (
     <div className="flex items-center justify-center w-64 h-64">
-      <span className="animate-sadface select-none">
+      <span className="animate-sadface select-none emoji-solid" style={{ '--emoji-fill': '#fca5a5' } as React.CSSProperties}>
         <SmileySad size={160} weight="duotone" color="#ef4444" />
       </span>
     </div>

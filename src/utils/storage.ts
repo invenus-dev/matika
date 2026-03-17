@@ -43,6 +43,7 @@ export function loadDailyCounts(): Record<ExerciseType, number> {
   const today = data[getTodayKey()] ?? {}
   return {
     'column-arithmetic': today['column-arithmetic'] ?? 0,
+    'unit-conversion': today['unit-conversion'] ?? 0,
   }
 }
 

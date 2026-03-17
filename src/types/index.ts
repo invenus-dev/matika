@@ -2,7 +2,7 @@ import type { Icon } from '@phosphor-icons/react'
 
 export type OperationType = 'addition' | 'subtraction'
 
-export type ExerciseType = 'column-arithmetic'
+export type ExerciseType = 'column-arithmetic' | 'unit-conversion'
 
 export interface ExerciseTypeInfo {
   type: ExerciseType
@@ -27,8 +27,16 @@ export interface ColumnProblem {
   answerDigits: AnswerDigit[]
 }
 
+export interface UnitConversionProblem {
+  family: 'length' | 'volume' | 'mass'
+  sourceValue: number
+  sourceUnit: string
+  targetUnit: string
+  expectedAnswer: number
+}
+
 export interface ProblemResult {
-  operation: OperationType
+  operation?: OperationType
   correct: boolean
   totalDigits: number
   correctDigits: number

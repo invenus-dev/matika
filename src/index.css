@@ -81,3 +81,9 @@ body {
 .animate-sadface {
   animation: sadface 0.7s ease-out forwards;
 }
+
+/* Make duotone icon fill opaque with a custom color */
+.emoji-solid path[opacity] {
+  opacity: 1;
+  fill: var(--emoji-fill);
+}
