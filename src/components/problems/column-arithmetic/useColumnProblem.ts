@@ -17,10 +17,11 @@ export function useColumnProblem(
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Is there an incorrect digit we can go back to?
-  const hasError = problem.answerDigits.some((d) => d.status === 'incorrect')
+  const errorCount = problem.answerDigits.filter((d) => d.status === 'incorrect').length
+  const hasError = errorCount > 0
   const allFilled = problem.answerDigits.every((d) => d.status !== 'empty')
-  const canFix = hasError && remainingFixes > 0
-  const waitingForFix = allFilled && hasError && !completed
+  const canFix = hasError && remainingFixes > 0 && errorCount <= remainingFixes
+  const waitingForFix = allFilled && hasError && !completed && errorCount <= remainingFixes
 
   // Cleanup timer on unmount
   useEffect(() => {
@@ -48,16 +49,38 @@ export function useColumnProblem(
       setProblem(updatedProblem)
 
       const nextPos = activePosition + 1
+      const errCount = newDigits.filter((d) => d.status === 'incorrect').length
+      const totalDigits = newDigits.length
 
-      if (nextPos >= newDigits.length) {
+      // Too many errors to fix — fail immediately, even mid-entry
+      if (errCount > remainingFixes) {
         const correctDigits = newDigits.filter((d) => d.status === 'correct').length
-        const totalDigits = newDigits.length
-        const allCorrect = correctDigits === totalDigits
-        const hasErrors = !allCorrect
+        const timeMs = Date.now() - startTimeRef.current
+        const result: ProblemResult = {
+          operation: problem.operation,
+          correct: false,
+          totalDigits,
+          correctDigits,
+          timeMs,
+        }
 
-        // If there are errors and fixes remain, wait for fix instead of advancing
-        if (hasErrors && remainingFixes > 0) {
-          // Don't advance position — stay, let user press fix
+        setCompleted(true)
+        setFeedback('incorrect')
+        timerRef.current = setTimeout(() => {
+          onResult(result)
+          setProblem(generateColumnProblem())
+          setActivePosition(0)
+          setCompleted(false)
+          setFeedback(null)
+          setRemainingFixes(MAX_FIXES_PER_PROBLEM)
+          startTimeRef.current = Date.now()
+        }, AUTO_ADVANCE_DELAY_MS)
+      } else if (nextPos >= totalDigits) {
+        const correctDigits = newDigits.filter((d) => d.status === 'correct').length
+        const allCorrect = correctDigits === totalDigits
+
+        if (!allCorrect && remainingFixes > 0 && errCount <= remainingFixes) {
+          // Errors exist but can still be fixed — wait for fix
         } else {
           const timeMs = Date.now() - startTimeRef.current
           const result: ProblemResult = {
