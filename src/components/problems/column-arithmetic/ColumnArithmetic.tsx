@@ -1,8 +1,8 @@
-import { useEffect, useCallback } from 'react'
+import { useCallback } from 'react'
 import type { ExerciseType, ProblemResult } from '../../../types'
 import { useProblemContext } from '../../../context/ProblemContext'
 import { useDailyProgress } from '../../../context/DailyProgressContext'
-import { NumberPad } from '../../common/NumberPad'
+import { DigitInput } from '../../common/DigitInput'
 import { ColumnDisplay } from './ColumnDisplay'
 import { FeedbackEmoji } from './FeedbackEmoji'
 import { useColumnProblem } from './useColumnProblem'
@@ -28,23 +28,6 @@ export function ColumnArithmetic({ exerciseType }: ColumnArithmeticProps) {
   const { problem, activePosition, completed, waitingForFix, feedback, enterDigit, canFix, remainingFixes, fixError } =
     useColumnProblem(handleResult)
 
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      const digit = parseInt(e.key, 10)
-      if (!isNaN(digit) && digit >= 0 && digit <= 9) {
-        enterDigit(digit)
-      } else if (e.key === 'Backspace' && canFix) {
-        fixError()
-      }
-    },
-    [enterDigit, canFix, fixError],
-  )
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleKeyDown])
-
   return (
     <div className="h-full flex flex-col md:flex-row md:items-center md:justify-center md:gap-48">
       {/* Top half: problem */}
@@ -66,7 +49,7 @@ export function ColumnArithmetic({ exerciseType }: ColumnArithmeticProps) {
       </div>
       {/* Bottom half: keyboard */}
       <div className="flex-1 flex items-start justify-center pt-4 pb-8 md:flex-none md:items-center md:pt-0 md:pb-0">
-        <NumberPad
+        <DigitInput
           onDigit={enterDigit}
           disabled={completed || waitingForFix}
           canFix={canFix}

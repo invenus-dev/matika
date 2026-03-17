@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "test": "vitest run",
     "preview": "vite preview",
     "deploy": "npm run build && wrangler pages deploy dist --project-name matika"
   },
@@ -30,6 +31,7 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^6.0.0",
+    "vitest": "^4.1.0",
     "wrangler": "^4.74.0"
   }
 }
