@@ -1,6 +1,11 @@
+import { useState } from 'react'
+import type { ExerciseType } from '../../types'
 import { useProblemContext } from '../../context/ProblemContext'
+import { useDailyProgress } from '../../context/DailyProgressContext'
+import { DAILY_GOAL } from '../../utils/constants'
 
 interface StatsPanelProps {
+  exerciseType: ExerciseType
   onClose: () => void
   onReset: () => void
 }
@@ -28,20 +33,52 @@ function ProgressBar({ value, max }: { value: number; max: number }) {
   )
 }
 
-export function StatsPanel({ onClose, onReset }: StatsPanelProps) {
-  const { stats, resetStats } = useProblemContext()
+export function StatsPanel({ exerciseType, onClose, onReset }: StatsPanelProps) {
+  const { getStats, resetStats } = useProblemContext()
+  const { dailyCounts, resetCount } = useDailyProgress()
+  const [confirming, setConfirming] = useState(false)
 
-  const elapsed = Date.now() - stats.startTime
+  const stats = getStats(exerciseType)
+  const dailyCount = dailyCounts[exerciseType] ?? 0
+
+  const elapsed = stats.elapsedMs
   const problemPct = stats.totalProblems === 0
     ? 0
     : Math.round((stats.correctProblems / stats.totalProblems) * 100)
-  const digitPct = stats.totalDigits === 0
-    ? 0
-    : Math.round((stats.correctDigits / stats.totalDigits) * 100)
 
   const handleReset = () => {
-    resetStats()
+    resetStats(exerciseType)
+    resetCount(exerciseType)
     onReset()
+  }
+
+  if (confirming) {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl">
+          <h2 className="text-xl font-bold text-gray-800 mb-3">
+            Začít znovu?
+          </h2>
+          <p className="text-sm text-gray-600 mb-6">
+            Vymaže se dnešní stav — statistiky i denní cíl.
+          </p>
+          <div className="flex gap-3">
+            <button
+              onClick={() => setConfirming(false)}
+              className="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+            >
+              Zpět
+            </button>
+            <button
+              onClick={handleReset}
+              className="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium bg-incorrect text-white hover:bg-red-600 transition-colors"
+            >
+              Vymazat
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -54,7 +91,7 @@ export function StatsPanel({ onClose, onReset }: StatsPanelProps) {
         <div className="space-y-4">
           <div>
             <div className="flex justify-between text-sm text-gray-600 mb-1">
-              <span>Příklady správně napoprvé</span>
+              <span>Příklady správně</span>
               <span className="font-medium">
                 {stats.correctProblems}/{stats.totalProblems} ({problemPct}%)
               </span>
@@ -64,12 +101,12 @@ export function StatsPanel({ onClose, onReset }: StatsPanelProps) {
 
           <div>
             <div className="flex justify-between text-sm text-gray-600 mb-1">
-              <span>Správné číslice</span>
+              <span>Denní cíl</span>
               <span className="font-medium">
-                {stats.correctDigits}/{stats.totalDigits} ({digitPct}%)
+                {dailyCount}/{DAILY_GOAL}
               </span>
             </div>
-            <ProgressBar value={stats.correctDigits} max={stats.totalDigits} />
+            <ProgressBar value={dailyCount} max={DAILY_GOAL} />
           </div>
 
           <div className="text-sm text-gray-600">
@@ -85,7 +122,7 @@ export function StatsPanel({ onClose, onReset }: StatsPanelProps) {
             Pokračovat
           </button>
           <button
-            onClick={handleReset}
+            onClick={() => setConfirming(true)}
             className="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium bg-primary text-white hover:bg-primary-dark transition-colors"
           >
             Začít znovu

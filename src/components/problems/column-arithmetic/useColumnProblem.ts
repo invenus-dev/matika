@@ -33,59 +33,58 @@ export function useColumnProblem(
     (digit: number) => {
       if (completed || waitingForFix) return
 
-      setProblem((prev) => {
-        const newDigits = [...prev.answerDigits]
-        const current = newDigits[activePosition]
-        const isCorrect = digit === current.expected
+      // Pure state update — compute new problem
+      const newDigits = [...problem.answerDigits]
+      const current = newDigits[activePosition]
+      const isCorrect = digit === current.expected
 
-        newDigits[activePosition] = {
-          ...current,
-          entered: digit,
-          status: isCorrect ? 'correct' : 'incorrect',
-        }
+      newDigits[activePosition] = {
+        ...current,
+        entered: digit,
+        status: isCorrect ? 'correct' : 'incorrect',
+      }
 
-        const updatedProblem = { ...prev, answerDigits: newDigits }
-        const nextPos = activePosition + 1
+      const updatedProblem = { ...problem, answerDigits: newDigits }
+      setProblem(updatedProblem)
 
-        if (nextPos >= newDigits.length) {
-          const correctDigits = newDigits.filter((d) => d.status === 'correct').length
-          const totalDigits = newDigits.length
-          const allCorrect = correctDigits === totalDigits
-          const hasErrors = !allCorrect
+      const nextPos = activePosition + 1
 
-          // If there are errors and fixes remain, wait for fix instead of advancing
-          if (hasErrors && remainingFixes > 0) {
-            // Don't advance position — stay, let user press fix
-          } else {
-            const timeMs = Date.now() - startTimeRef.current
-            const result: ProblemResult = {
-              operation: prev.operation,
-              correct: allCorrect,
-              totalDigits,
-              correctDigits,
-              timeMs,
-            }
+      if (nextPos >= newDigits.length) {
+        const correctDigits = newDigits.filter((d) => d.status === 'correct').length
+        const totalDigits = newDigits.length
+        const allCorrect = correctDigits === totalDigits
+        const hasErrors = !allCorrect
 
-            setCompleted(true)
-            setFeedback(allCorrect ? 'correct' : 'incorrect')
-            timerRef.current = setTimeout(() => {
-              onResult(result)
-              setProblem(generateColumnProblem())
-              setActivePosition(0)
-              setCompleted(false)
-              setFeedback(null)
-              setRemainingFixes(MAX_FIXES_PER_PROBLEM)
-              startTimeRef.current = Date.now()
-            }, AUTO_ADVANCE_DELAY_MS)
-          }
+        // If there are errors and fixes remain, wait for fix instead of advancing
+        if (hasErrors && remainingFixes > 0) {
+          // Don't advance position — stay, let user press fix
         } else {
-          setActivePosition(nextPos)
-        }
+          const timeMs = Date.now() - startTimeRef.current
+          const result: ProblemResult = {
+            operation: problem.operation,
+            correct: allCorrect,
+            totalDigits,
+            correctDigits,
+            timeMs,
+          }
 
-        return updatedProblem
-      })
+          setCompleted(true)
+          setFeedback(allCorrect ? 'correct' : 'incorrect')
+          timerRef.current = setTimeout(() => {
+            onResult(result)
+            setProblem(generateColumnProblem())
+            setActivePosition(0)
+            setCompleted(false)
+            setFeedback(null)
+            setRemainingFixes(MAX_FIXES_PER_PROBLEM)
+            startTimeRef.current = Date.now()
+          }, AUTO_ADVANCE_DELAY_MS)
+        }
+      } else {
+        setActivePosition(nextPos)
+      }
     },
-    [activePosition, completed, waitingForFix, remainingFixes, onResult],
+    [problem, activePosition, completed, waitingForFix, remainingFixes, onResult],
   )
 
   const fixError = useCallback(() => {

@@ -1,14 +1,32 @@
 import { useEffect, useCallback } from 'react'
+import type { ExerciseType, ProblemResult } from '../../../types'
 import { useProblemContext } from '../../../context/ProblemContext'
+import { useDailyProgress } from '../../../context/DailyProgressContext'
 import { NumberPad } from '../../common/NumberPad'
 import { ColumnDisplay } from './ColumnDisplay'
 import { FeedbackEmoji } from './FeedbackEmoji'
 import { useColumnProblem } from './useColumnProblem'
 
-export function ColumnArithmetic() {
+interface ColumnArithmeticProps {
+  exerciseType: ExerciseType
+}
+
+export function ColumnArithmetic({ exerciseType }: ColumnArithmeticProps) {
   const { recordResult } = useProblemContext()
+  const { incrementCount } = useDailyProgress()
+
+  const handleResult = useCallback(
+    (result: ProblemResult) => {
+      recordResult(exerciseType, result)
+      if (result.correct) {
+        incrementCount(exerciseType)
+      }
+    },
+    [recordResult, incrementCount, exerciseType],
+  )
+
   const { problem, activePosition, completed, waitingForFix, feedback, enterDigit, canFix, remainingFixes, fixError } =
-    useColumnProblem(recordResult)
+    useColumnProblem(handleResult)
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {

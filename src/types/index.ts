@@ -1,5 +1,14 @@
 export type OperationType = 'addition' | 'subtraction'
 
+export type ExerciseType = 'column-arithmetic'
+
+export interface ExerciseTypeInfo {
+  type: ExerciseType
+  name: string
+  description: string
+  icon: string
+}
+
 export type DigitStatus = 'empty' | 'correct' | 'incorrect'
 
 export interface AnswerDigit {
@@ -29,5 +38,5 @@ export interface SessionStats {
   correctProblems: number
   totalDigits: number
   correctDigits: number
-  startTime: number
+  elapsedMs: number
 }

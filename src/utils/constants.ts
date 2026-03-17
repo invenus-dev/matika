@@ -4,3 +4,14 @@ export const OPERAND_B_MIN = 10
 export const OPERAND_B_MAX = 99
 
 export const AUTO_ADVANCE_DELAY_MS = 1500
+
+export const DAILY_GOAL = 10
+
+export const EXERCISE_TYPES: import('../types').ExerciseTypeInfo[] = [
+  {
+    type: 'column-arithmetic',
+    name: 'Sčítání a odčítání',
+    description: 'Pod čarou do 1000',
+    icon: '➕',
+  },
+]
