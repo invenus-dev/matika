@@ -1,6 +1,7 @@
 import { ArrowLeft, ChartBar } from '@phosphor-icons/react'
 import type { ExerciseType } from '../../types'
 import { EXERCISE_TYPES, DAILY_GOAL } from '../../utils/constants'
+import { Logo } from '../common/Logo'
 
 interface HeaderProps {
   activeExerciseType: ExerciseType | null
@@ -34,7 +35,10 @@ export function Header({
           <ArrowLeft size={20} weight="bold" /> {exerciseInfo.name}
         </button>
       ) : (
-        <h1 className="text-lg font-semibold text-gray-800">Matika</h1>
+        <div className="flex items-center gap-2">
+          <Logo size={32} className="hidden md:block" />
+          <h1 className="text-lg font-semibold text-gray-800">Matika</h1>
+        </div>
       )}
       <div className="flex items-center gap-3">
         <span className="text-sm font-medium text-gray-600">

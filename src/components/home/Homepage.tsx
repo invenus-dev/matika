@@ -1,5 +1,6 @@
 import type { ExerciseType } from '../../types'
 import { EXERCISE_TYPES, DAILY_GOAL } from '../../utils/constants'
+import { Logo } from '../common/Logo'
 
 interface HomepageProps {
   dailyCounts: Record<ExerciseType, number>
@@ -9,6 +10,7 @@ interface HomepageProps {
 export function Homepage({ dailyCounts, onSelectExercise }: HomepageProps) {
   return (
     <div className="h-full flex flex-col items-center justify-center p-6">
+      <Logo size={80} className="mb-4" />
       <h2 className="text-2xl font-bold text-gray-800 mb-8">
         Co budeme procvičovat?
       </h2>
