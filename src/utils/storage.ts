@@ -44,6 +44,7 @@ export function loadDailyCounts(): Record<ExerciseType, number> {
   return {
     'column-arithmetic': today['column-arithmetic'] ?? 0,
     'unit-conversion': today['unit-conversion'] ?? 0,
+    'multiplication-division': today['multiplication-division'] ?? 0,
   }
 }
 

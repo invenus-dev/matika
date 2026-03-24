@@ -53,3 +53,12 @@ Mezi druhy příkladů půjde přepnout a pak se klidně může vše promazat a 
 - Používané řády: deci, centi, mili, kilo. 
 - Ovládání: klávesy + a - pro přidání / ubrání řádu, tlačítko pro potvrzení odpovědi, vyhodnocení správnosti
 - 1 pokus na opravu.
+
+### Násobení a dělení, jednociferné členy
+
+- Jednoduché příklady na násobení a dělení, kde násobitelé jsou jednociferná čísla a výsledky jsou do 100. Například: 7 x 8 = ?, 56 : 7 = ?
+- Ovládání: dotykové zadávání výsledku, po zadání se zobrazí feedback o správnosti.
+- Denní cíl je vyšší, 20 příkladů, protože jsou jednodušší.
+- Layout: příklad vedle sebe (například: 7 x 8 nebo 56 : 7), pod ním pole pro zadání výsledku, pod ním dotyková klávesnice s čísly 0-9 a tlačítkem pro potvrzení odpovědi. 
+- Schválně nechat počet číslic výsledku potencionálně až 2, nedělat okamžitou zpětnou vazbu, ale až po potvrzení odpovědi.
+- Možnost opravy 1x.

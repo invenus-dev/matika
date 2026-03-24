@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import type { ExerciseType } from './types'
+import { getDailyGoal } from './utils/constants'
 import { DailyProgressProvider, useDailyProgress } from './context/DailyProgressContext'
 import { ProblemProvider, useProblemContext } from './context/ProblemContext'
 import { Header } from './components/layout/Header'
@@ -60,6 +61,7 @@ function AppContent() {
       {justReachedGoal && (
         <GoalCelebration
           dailyTotal={activeDaily}
+          dailyGoal={activeExerciseType ? getDailyGoal(activeExerciseType) : 10}
           onContinue={dismissGoalCelebration}
           onGoHome={() => {
             dismissGoalCelebration()

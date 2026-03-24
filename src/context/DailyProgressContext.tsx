@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
 import type { ExerciseType } from '../types'
-import { DAILY_GOAL } from '../utils/constants'
+import { getDailyGoal } from '../utils/constants'
 import { loadDailyCounts, incrementDailyCount, resetDailyCount } from '../utils/storage'
 
 interface DailyProgressValue {
@@ -21,13 +21,13 @@ export function DailyProgressProvider({ children }: { children: ReactNode }) {
   const incrementCount = useCallback((type: ExerciseType) => {
     const newCount = incrementDailyCount(type)
     setDailyCounts((prev) => ({ ...prev, [type]: newCount }))
-    if (newCount === DAILY_GOAL) {
+    if (newCount === getDailyGoal(type)) {
       setJustReachedGoal(true)
     }
   }, [])
 
   const goalReached = useCallback(
-    (type: ExerciseType) => dailyCounts[type] >= DAILY_GOAL,
+    (type: ExerciseType) => dailyCounts[type] >= getDailyGoal(type),
     [dailyCounts],
   )
 

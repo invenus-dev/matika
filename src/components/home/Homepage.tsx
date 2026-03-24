@@ -1,5 +1,5 @@
 import type { ExerciseType } from '../../types'
-import { EXERCISE_TYPES, DAILY_GOAL } from '../../utils/constants'
+import { EXERCISE_TYPES } from '../../utils/constants'
 import { Logo } from '../common/Logo'
 
 interface HomepageProps {
@@ -17,7 +17,7 @@ export function Homepage({ dailyCounts, onSelectExercise }: HomepageProps) {
       <div className="grid gap-4 w-full max-w-sm">
         {EXERCISE_TYPES.map((ex) => {
           const count = dailyCounts[ex.type] ?? 0
-          const done = count >= DAILY_GOAL
+          const done = count >= ex.dailyGoal
           return (
             <button
               key={ex.type}
@@ -39,7 +39,7 @@ export function Homepage({ dailyCounts, onSelectExercise }: HomepageProps) {
                     : 'bg-gray-100 text-gray-600'
                 }`}
               >
-                {count}/{DAILY_GOAL}
+                {count}/{ex.dailyGoal}
               </span>
             </button>
           )

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { ExerciseType } from '../../types'
 import { useProblemContext } from '../../context/ProblemContext'
 import { useDailyProgress } from '../../context/DailyProgressContext'
-import { DAILY_GOAL } from '../../utils/constants'
+import { getDailyGoal } from '../../utils/constants'
 
 interface StatsPanelProps {
   exerciseType: ExerciseType
@@ -103,10 +103,10 @@ export function StatsPanel({ exerciseType, onClose, onReset }: StatsPanelProps) 
             <div className="flex justify-between text-sm text-gray-600 mb-1">
               <span>Denní cíl</span>
               <span className="font-medium">
-                {dailyCount}/{DAILY_GOAL}
+                {dailyCount}/{getDailyGoal(exerciseType)}
               </span>
             </div>
-            <ProgressBar value={dailyCount} max={DAILY_GOAL} />
+            <ProgressBar value={dailyCount} max={getDailyGoal(exerciseType)} />
           </div>
 
           <div className="text-sm text-gray-600">

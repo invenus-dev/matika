@@ -1,6 +1,6 @@
 import { ArrowLeft, ChartBar } from '@phosphor-icons/react'
 import type { ExerciseType } from '../../types'
-import { EXERCISE_TYPES, DAILY_GOAL } from '../../utils/constants'
+import { EXERCISE_TYPES, getDailyGoal } from '../../utils/constants'
 import { Logo } from '../common/Logo'
 
 interface HeaderProps {
@@ -43,7 +43,7 @@ export function Header({
       <div className="flex items-center gap-3">
         {activeExerciseType && (
           <span className="text-sm font-medium text-gray-600">
-            {dailyCount}/{DAILY_GOAL}
+            {dailyCount}/{activeExerciseType ? getDailyGoal(activeExerciseType) : 10}
           </span>
         )}
         {activeExerciseType && (

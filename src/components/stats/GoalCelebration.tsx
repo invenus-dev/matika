@@ -1,13 +1,12 @@
 import { Trophy } from '@phosphor-icons/react'
-import { DAILY_GOAL } from '../../utils/constants'
-
 interface GoalCelebrationProps {
   dailyTotal: number
+  dailyGoal: number
   onContinue: () => void
   onGoHome: () => void
 }
 
-export function GoalCelebration({ dailyTotal, onContinue, onGoHome }: GoalCelebrationProps) {
+export function GoalCelebration({ dailyTotal, dailyGoal, onContinue, onGoHome }: GoalCelebrationProps) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
@@ -18,7 +17,7 @@ export function GoalCelebration({ dailyTotal, onContinue, onGoHome }: GoalCelebr
           Denní cíl splněn!
         </h2>
         <p className="text-gray-600 mb-6">
-          Dnes máš už {dailyTotal} z {DAILY_GOAL} správně!
+          Dnes máš už {dailyTotal} z {dailyGoal} správně!
         </p>
         <div className="flex gap-3">
           <button
