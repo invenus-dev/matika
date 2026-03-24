@@ -13,23 +13,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-A math practice app for 3rd graders (Czech language). Homepage lets the child pick an exercise type. Currently only column addition/subtraction is implemented. The child enters the answer digit-by-digit from right to left with immediate feedback (green/red) and animated emoji. After all digits are filled, auto-advances to the next problem after 1500ms. Up to 2 fixes per problem via a backspace button. Daily goal is 10 problems per exercise — reaching it triggers a celebration modal. Stats panel shows correct/total, daily progress, and elapsed time. All progress persists in localStorage keyed by date.
+A math practice app for 3rd graders (Czech language). Homepage lets the child pick an exercise type. Three exercises are implemented:
+
+1. **Column arithmetic** (`column-arithmetic`) — addition/subtraction up to 1000, digit-by-digit entry right-to-left with immediate feedback. Daily goal: 10.
+2. **Multiplication & division** (`multiplication-division`) — small times table (products up to 100), free-form numeric input with confirm button. Daily goal: 20.
+3. **Unit conversions** (`unit-conversion`) — length, volume, and mass conversions (meters, kilograms, liters) using ×10/÷10 buttons. Daily goal: 10.
+
+Each exercise auto-advances to the next problem after 1500ms on completion. Up to 2 fixes per problem. Reaching the daily goal triggers a celebration modal. Stats panel shows correct/total, daily progress, and elapsed time. All progress persists in localStorage keyed by date.
 
 ## Architecture
 
-**Views:** Homepage (exercise selection) → ProblemArea (exercise router) → ColumnArithmetic. Header shows back button, exercise name, daily progress (X/10), and stats button.
+**Views:** Homepage (exercise cards with Phosphor icons + daily progress badges) → ProblemArea (exercise router by `ExerciseType`) → exercise-specific component. Header shows back button, exercise name, daily progress (X/goal), and stats button.
+
+**Exercise registry:** `utils/constants.ts` defines `EXERCISE_TYPES` array — each entry has type, name, description, icon, and dailyGoal. Homepage and storage both derive from this registry.
 
 **State management:** Two React Contexts — `ProblemContext` (session stats via `useReducer`) and `DailyProgressContext` (daily counts + goal celebration). Per-problem state lives in a state machine driven by `useExerciseMachine` hook.
 
-**State machine pattern:** Pure reducer in `state-machines/column-arithmetic/reducer.ts` returns `[newState, effects]`. Effects (`scheduleAdvance`, `cancelAdvance`) are executed by `useExerciseMachine` hook which manages timers. This keeps the reducer testable without side effects.
+**State machine pattern:** Each exercise has its own pure reducer in `state-machines/<exercise>/reducer.ts` returning `[newState, effects]`. Effects (`scheduleAdvance`, `cancelAdvance`) are executed by the shared `useExerciseMachine` hook which manages timers. This keeps reducers testable without side effects. All three exercises follow this identical pattern.
 
-**Problem lifecycle:** `generateColumnProblem()` randomly picks +/− → user enters digits right-to-left → each digit validated immediately → on completion, 1500ms pause → `onResult` records stats + increments daily count → new problem generated.
-
-**Digit representation:** `extractDigits()` returns digits least-significant-first (index 0 = ones). `answerDigits` array uses same order. `ColumnDisplay` reverses for visual rendering and maps `logicalIdx` back for active position highlight.
+**Column arithmetic specifics:** `generateColumnProblem()` randomly picks +/− → user enters digits right-to-left → each digit validated immediately. `extractDigits()` returns digits least-significant-first (index 0 = ones). `ColumnDisplay` reverses for visual rendering and maps `logicalIdx` back for active position highlight.
 
 **Error & fix logic:** Max 2 fixes per problem. If errors exceed remaining fixes, problem is marked wrong immediately. `fixError()` resets last incorrect digit and all following digits.
 
 **Persistence:** `utils/storage.ts` stores daily counts (`matika-daily`) and session stats (`matika-stats`) in localStorage, keyed by date. Handles quota exceeded / private browsing silently.
+
+**Version checking:** `utils/version-check.ts` polls `/version.json` every 60s in production and auto-reloads when a new build is detected. Build ID is injected by a custom Vite plugin in `vite.config.ts`.
 
 ## Key Conventions
 
@@ -40,3 +48,4 @@ A math practice app for 3rd graders (Czech language). Homepage lets the child pi
 - Czech UI labels throughout
 - Tests use Vitest with globals enabled; reducer tests are in `*.test.ts` next to the reducer
 - Custom CSS animations in `index.css`: shake (incorrect), celebrate (correct), sparkle (feedback icons), sadface
+- Each exercise follows the same file structure: `components/problems/<exercise>/`, `state-machines/<exercise>/`, and a generator in `utils/`
