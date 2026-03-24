@@ -18,11 +18,15 @@ Mezi druhy příkladů půjde přepnout a pak se klidně může vše promazat a 
 - React / Typescript / Tailwind, build systém pravděpodobně Vite ale nechám otevřené
 - Deployment někde kde je zdarma hosting (Cloudflare Pages?)
 
+## Automatický refresh na novou verzi
+
+- Po nasazení nové verze by se měl automaticky obnovit pro všechny uživatele, kteří mají otevřenou starou verzi, aby měli vždy tu nejnovější.
+
 ## Denní cíl
 
 - Použít lokální cookie nebo lépe local storage pro uložení průběhu
 - U každého typu příkladu sledovat počet správných řešení za den - ideálně zobrazit někde nahoře v navigaci
-- Nastavme denní cíl 10 příkladů
+- Nastavme denní cíl 10 příkladů ale jednotlivé příklady mohou být jinak
 - Po dosažení cíle zobrazit gratulaci a možnost pokračovat dál, zároveň ukázat statistiky.
 
 ## Navigační lišta
