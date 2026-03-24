@@ -1,18 +1,10 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
+import { useState, useCallback, type ReactNode } from 'react'
 import type { ExerciseType } from '../types'
 import { getDailyGoal } from '../utils/constants'
 import { loadDailyCounts, incrementDailyCount, resetDailyCount } from '../utils/storage'
+import { DailyProgressContext } from './useDailyProgress'
 
-interface DailyProgressValue {
-  dailyCounts: Record<ExerciseType, number>
-  incrementCount: (type: ExerciseType) => void
-  resetCount: (type: ExerciseType) => void
-  goalReached: (type: ExerciseType) => boolean
-  justReachedGoal: boolean
-  dismissGoalCelebration: () => void
-}
-
-const DailyProgressContext = createContext<DailyProgressValue | null>(null)
+export { DailyProgressContext }
 
 export function DailyProgressProvider({ children }: { children: ReactNode }) {
   const [dailyCounts, setDailyCounts] = useState(loadDailyCounts)
@@ -45,10 +37,4 @@ export function DailyProgressProvider({ children }: { children: ReactNode }) {
       {children}
     </DailyProgressContext.Provider>
   )
-}
-
-export function useDailyProgress() {
-  const ctx = useContext(DailyProgressContext)
-  if (!ctx) throw new Error('useDailyProgress must be used within DailyProgressProvider')
-  return ctx
 }

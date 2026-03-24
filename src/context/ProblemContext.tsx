@@ -1,6 +1,9 @@
-import { createContext, useContext, useReducer, useCallback, type ReactNode } from 'react'
+import { useReducer, useCallback, type ReactNode } from 'react'
 import type { ExerciseType, ProblemResult, SessionStats } from '../types'
 import { loadDailyStats, saveDailyStats, clearDailyStats } from '../utils/storage'
+import { ProblemContext } from './useProblemContext'
+
+export { ProblemContext }
 
 type StatsMap = Partial<Record<ExerciseType, SessionStats>>
 
@@ -41,14 +44,6 @@ function reducer(state: StatsMap, action: Action): StatsMap {
   }
 }
 
-interface ProblemContextValue {
-  getStats: (type: ExerciseType) => SessionStats
-  recordResult: (type: ExerciseType, result: ProblemResult) => void
-  resetStats: (type: ExerciseType) => void
-}
-
-const ProblemContext = createContext<ProblemContextValue | null>(null)
-
 export function ProblemProvider({ children }: { children: ReactNode }) {
   const [statsMap, dispatch] = useReducer(reducer, {})
 
@@ -73,10 +68,4 @@ export function ProblemProvider({ children }: { children: ReactNode }) {
       {children}
     </ProblemContext.Provider>
   )
-}
-
-export function useProblemContext() {
-  const ctx = useContext(ProblemContext)
-  if (!ctx) throw new Error('useProblemContext must be used within ProblemProvider')
-  return ctx
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { ExerciseType } from '../../types'
-import { useProblemContext } from '../../context/ProblemContext'
-import { useDailyProgress } from '../../context/DailyProgressContext'
+import { useProblemContext } from '../../context/useProblemContext'
+import { useDailyProgress } from '../../context/useDailyProgress'
 import { getDailyGoal } from '../../utils/constants'
 
 interface StatsPanelProps {
